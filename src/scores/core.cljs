@@ -5,10 +5,8 @@
    ;; libraries: 
    [goog.dom :as gdom]
    [reagent.core :as reagent :refer [atom]]
-   [reagent.dom :as rdom]
-   [cljs.pprint :refer [pprint]]
-   [re-frame.core :as rf]
-   [re-frame.db :as rfdb]))
+   [reagent.dom :as rdom]  
+   [re-frame.core :as rf]))
 
 (println "This text is printed from src/scores/core.cljs. Go ahead and edit it and see reloading in action.")
 
@@ -25,8 +23,7 @@
 
 (defn mount-app-element []
   (when-let [el (get-app-element)]
-    (rf/dispatch-sync [:init-db])
-    	
+    (rf/dispatch-sync [:init-db])    	
     (mount el)))
 
 ;; conditionally start your application based on the presence of an "app" element
