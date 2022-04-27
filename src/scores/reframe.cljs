@@ -36,15 +36,24 @@
        (assoc db :coeff cf :jump-params j-param)
        db))))
 
+(defn to-be-fixed-roll [params mod]
+	(shuffle (case mod
+	:max (take 5 (sort > (take 15 (repeatedly #(data/score (params :judges))))))
+	:min (take 5 (sort < (take 15 (repeatedly #(data/score (params :judges))))))
+	(take 5 (drop 5 (sort < (take 15 (repeatedly #(data/score (params :judges)))))))
+	))
+)
+
 
 (rf/reg-event-db
  :reroll
- (fn [db _]
+ (fn [db [_ mod]]
    (let [params (db :jump-params)
          dist (data/score (params :distance))
          hei  (data/score (params :height))
          wind (data/score (params :wind))
-         j-vals (take 5 (repeatedly #(data/score (params :judges))))]
+        ; j-vals (take 5 (repeatedly #(data/score (params :judges))))
+		j-vals (to-be-fixed-roll params mod) ]
 
      (-> db
          (assoc-in [:score :judges] j-vals)

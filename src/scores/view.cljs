@@ -2,7 +2,10 @@
   (:require [cljs.pprint :refer [cl-format]]
             [scores.data :as data]
             [reagent.core :as reagent]
-            [re-frame.core :as rf]))
+            [re-frame.core :as rf]
+			 [cljs.pprint :refer [pprint cl-format]]
+		  
+		   [re-frame.db :as rfdb]))
 
 (defn card [c-code [score strike?]]
   [:div.column.is-one-fifth {:key c-code}
@@ -18,8 +21,8 @@
     [:div.columns
      (map #(card (countries %) (scores %)) (range 5))]))
 
-(defn reload [text]
-  [:button.button.is-danger {:on-click (fn [_] (rf/dispatch [:reroll]))} text])
+(defn reload [text mod]
+  [:button.button.is-danger {:on-click (fn [_] (rf/dispatch [:reroll mod]))} text])
 
 (defn screen-btn [text destination]
   [:button.button {:on-click (fn [_] (rf/dispatch [:screen destination]))} text])
@@ -32,7 +35,9 @@
    [screen-btn "Scores" :scoresheet]
    [screen-btn "Input" :input]
   ; [screen-btn "devcards" :devcards]
-   [reload "Skok!!!"]])
+   [reload "Super!!!" :max]
+   [reload "OK!!!" :avg]
+   [reload "Faul!!!" :min]])
 
 (defn details []
   (let [maps (vals @(rf/subscribe [:res-maps]))]
@@ -122,5 +127,5 @@
      :scoresheet [display-scores]
      :input [input-data]
      [display-scores])
-	;[:pre (with-out-str (pprint @rfdb/app-db))]
+	[:pre (with-out-str (pprint @rfdb/app-db))]
    ])
