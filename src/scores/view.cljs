@@ -127,5 +127,5 @@
      :scoresheet [display-scores]
      :input [input-data]
      [display-scores])
-	[:pre (with-out-str (pprint @rfdb/app-db))]
+	;[:pre (with-out-str (pprint @rfdb/app-db))]
    ])
